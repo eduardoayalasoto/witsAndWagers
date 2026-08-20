@@ -1,245 +1,126 @@
-# Deploying #Trivia to Vercel
+# Deploying #Trivia
 
 ## Prerequisites
 
-- Vercel account (free tier works great)
-- Supabase project already set up (you have this!)
-- Git repository (recommended)
+- Railway account (free trial, then usage-based pricing)
+- Git repository (recommended) — push this repo to GitHub first
+- A Supabase project **for Realtime only** (see note below) — the free tier is enough
 
-## Quick Deploy Steps
+> **Do you still need Supabase if the database lives on Railway?** Yes, but only for
+> live updates. This app's real-time sync (`lib/realtime/`) uses Supabase's Realtime
+> **Broadcast** feature, which is a pub/sub channel independent of where your Postgres
+> data actually lives — it doesn't read from your database at all. So you'll have two
+> separate services: Railway hosts the app and the Postgres data (with a persistent
+> volume), and a free Supabase project is used purely as the WebSocket relay for
+> broadcasting game events between players' devices. If you'd rather drop Supabase
+> entirely, that means replacing `lib/realtime/` with your own WebSocket/SSE layer —
+> ask if you want help with that.
 
-### 1. Prepare Your Repository
+## Deploying to Railway
 
-First, let's make sure everything is committed:
+### 1. Create the project
 
-```bash
-git add .
-git commit -m "Ready for deployment"
-git push
-```
+1. Go to [railway.app](https://railway.app) and create a new project.
+2. **Deploy from GitHub repo** → select this repository.
+3. Railway auto-detects this as a Node.js/Next.js app (via Nixpacks) and uses the
+   `railway.json` in this repo, which:
+   - builds with `npm run build`
+   - runs pending database migrations, then starts the server:
+     `npm run db:migrate && npm run start`
 
-If you don't have a Git repository yet:
+### 2. Add a Postgres database (with a volume)
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-# Then push to GitHub/GitLab/Bitbucket
-```
+1. In the same Railway project, click **+ New** → **Database** → **Add PostgreSQL**.
+   Railway provisions this with a persistent volume automatically — no manual volume
+   setup needed.
+2. On your app service, go to **Variables** and add:
+   ```
+   DATABASE_URL=${{Postgres.DATABASE_URL}}
+   ```
+   This references the Postgres service's private connection string, so traffic
+   between your app and the database stays on Railway's internal network (faster, and
+   doesn't count against bandwidth).
 
-### 2. Deploy to Vercel
+### 3. Add the Supabase Realtime variables
 
-**Option A: Using Vercel CLI (Fastest)**
-
-```bash
-# Install Vercel CLI if you haven't
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Follow the prompts:
-# - Link to existing project or create new
-# - Set up project settings
-# - Deploy!
-```
-
-**Option B: Using Vercel Dashboard**
-
-1. Go to [vercel.com](https://vercel.com)
-2. Click "Add New Project"
-3. Import your Git repository
-4. Vercel will auto-detect Next.js settings
-5. Click "Deploy"
-
-### 3. Configure Environment Variables
-
-In your Vercel project dashboard:
-
-1. Go to **Settings** → **Environment Variables**
-2. Add these variables (copy from your `.env.local`):
+On your app service, add:
 
 ```
-DATABASE_URL=postgresql://postgres.[YOUR-PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
 NEXT_PUBLIC_SUPABASE_URL=https://[YOUR-PROJECT-REF].supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=[YOUR-ANON-KEY]
 ```
 
-   ⚠️ **Use the connection pooler for `DATABASE_URL`, not the direct connection.** In
-   Supabase, go to **Settings → Database → Connection string** and pick **"Transaction"**
-   or **"Session"** mode (host `aws-0-<region>.pooler.supabase.com`), not the direct
-   connection (`db.<project-ref>.supabase.co:5432`). The direct connection resolves over
-   IPv6 only on newer Supabase projects, and Vercel's serverless functions run on an
-   IPv4-only network — the connection will simply fail to establish, which looks exactly
-   like "the app is disconnected from the database" even though everything is configured
-   correctly. See the **Troubleshooting** section below.
+Find these under your Supabase project's **Settings → API**. You don't need to run
+any schema or migrations in this Supabase project — it's not storing game data.
 
-3. Make sure to add them for **Production**, **Preview**, and **Development** environments
+### 4. Generate a domain and deploy
 
-### 4. Redeploy
+1. On your app service, go to **Settings → Networking → Generate Domain** (or attach
+   a custom domain).
+2. Deploy. Railway builds the app, runs migrations against the fresh database, and
+   starts the server.
 
-After adding environment variables:
+### 5. Verify
 
-```bash
-vercel --prod
-```
+- Visit the generated URL and create a game ("Host a Game").
+- Join from another device with the QR code or join code.
+- Submit a guess and confirm it shows up live on the host dashboard.
 
-Or trigger a redeploy from the Vercel dashboard.
+### Redeploying
 
-## Post-Deployment Checklist
-
-### ✅ Test the Deployment
-
-1. **Visit your deployed URL** (e.g., `https://your-app.vercel.app`)
-2. **Create a game** - Click "Host a Game"
-3. **Join as a player** - Open on your phone and scan the QR code
-4. **Test real-time updates** - Make sure changes sync across devices
-
-### ✅ Verify Database Connection
-
-The app should connect to your Supabase database automatically. If you see database errors:
-
-- Check that environment variables are set correctly
-- Verify your Supabase database is accessible (not paused)
-- Check Vercel deployment logs for errors
-
-### ✅ Test Real-time Features
-
-- Join with multiple devices
-- Submit guesses and verify they appear on the host dashboard
-- Advance phases and verify all players see the updates
-
-## Custom Domain (Optional)
-
-To use your own domain:
-
-1. Go to Vercel project → **Settings** → **Domains**
-2. Add your domain
-3. Update DNS records as instructed
-4. Vercel handles SSL automatically
+Every push to the branch Railway is watching triggers a new build. Migrations run
+automatically on every deploy (`npm run db:migrate`), and are safe to run repeatedly —
+only pending migrations are applied.
 
 ## Troubleshooting
 
 ### "Database connection failed" / app looks disconnected from the DB
 
-This is almost always one of these two things:
-
-1. **Using the direct connection instead of the pooler.** Supabase's direct connection
-   (`db.<project-ref>.supabase.co:5432`) is IPv6-only on newer projects. Vercel's
-   serverless functions have no IPv6 route to it, so connections hang or fail outright.
-   Fix: in Supabase, go to **Settings → Database → Connection string**, copy the
-   **connection pooler** string (host `aws-0-<region>.pooler.supabase.com`), and use that
-   for `DATABASE_URL` in Vercel instead.
-2. **Missing/incorrect `DATABASE_URL` in Vercel**, or set only for some environments.
-   Verify it's present for Production (and Preview, if you use preview deployments), and
-   that the password in the string is current.
-
-Also check:
-
-- Supabase project is not paused (free-tier projects pause after a period of inactivity)
-- Vercel deployment logs (`vercel logs` or the dashboard) for the actual connection error
-- Connection string includes the password and ends in `/postgres`
+- Confirm `DATABASE_URL` is set on the **app service** (not just the Postgres
+  service) and points at `${{Postgres.DATABASE_URL}}`.
+- Check the deploy logs for the actual error (Railway dashboard → your service →
+  **Deployments** → view logs).
+- If you see an SSL-related error (e.g. "the server does not support SSL
+  connections"), you're likely connecting over Railway's public TCP proxy instead of
+  the private network — either switch to `${{Postgres.DATABASE_URL}}` (private,
+  no TLS needed), or append `?sslmode=disable` to whichever `DATABASE_URL` you're
+  using.
 
 ### "Real-time not working"
 
-- Verify `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
-- Check browser console for errors
-- Verify Supabase Realtime is enabled for your tables
+- Verify `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set and
+  point at a real Supabase project (see the note at the top of this doc).
+- Check the browser console for connection errors.
 
 ### "Build failed"
 
-- Check Vercel build logs
-- Ensure all dependencies are in `package.json`
-- Verify TypeScript has no errors: `npm run build` locally
+- Check the build logs in the Railway dashboard.
+- Verify `npm run build` succeeds locally first.
 
-### "Environment variables not working"
+## Alternative: Deploying to Vercel
 
-- Make sure variables are added to the correct environment (Production/Preview/Development)
-- Redeploy after adding variables
-- Check variable names match exactly (case-sensitive)
+Vercel works too, with one important caveat: Vercel's serverless functions run on an
+IPv4-only network, so `DATABASE_URL` **must** use Supabase's connection **pooler**
+(`aws-0-<region>.pooler.supabase.com`), not the direct connection
+(`db.<project-ref>.supabase.co:5432`) — the direct connection is IPv6-only on newer
+Supabase projects and will silently fail to connect from Vercel, which looks exactly
+like "the app is disconnected from the database".
 
-## Performance Tips
+1. `vercel` (or import the repo from the Vercel dashboard).
+2. In **Settings → Environment Variables**, add for Production/Preview/Development:
+   ```
+   DATABASE_URL=postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
+   NEXT_PUBLIC_SUPABASE_URL=https://[PROJECT-REF].supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=[YOUR-ANON-KEY]
+   ```
+3. `vercel --prod`, or redeploy from the dashboard after adding the variables.
 
-### Enable Vercel Analytics (Optional)
-
-```bash
-npm install @vercel/analytics
-```
-
-Then add to your root layout:
-
-```tsx
-import { Analytics } from "@vercel/analytics/react";
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
-}
-```
-
-### Enable Vercel Speed Insights (Optional)
-
-```bash
-npm install @vercel/speed-insights
-```
-
-## Monitoring
-
-- **Vercel Dashboard**: Monitor deployments, logs, and analytics
-- **Supabase Dashboard**: Monitor database queries and real-time connections
-- **Browser DevTools**: Check for client-side errors
-
-## Updating Your Deployment
-
-Whenever you make changes:
-
-```bash
-git add .
-git commit -m "Your changes"
-git push
-```
-
-Vercel will automatically deploy the changes!
-
-Or use the CLI:
-
-```bash
-vercel --prod
-```
-
-## Cost Considerations
-
-**Vercel Free Tier includes:**
-
-- Unlimited deployments
-- 100GB bandwidth/month
-- Automatic HTTPS
-- Preview deployments
-
-**Supabase Free Tier includes:**
-
-- 500MB database
-- 2GB bandwidth/month
-- 50,000 monthly active users
-- Realtime connections
-
-Both should be more than enough for your game show event!
-
-## Next Steps
-
-1. Test thoroughly on multiple devices
-2. Customize questions for your event
-3. Share the URL with participants
-4. Consider adding a custom domain for a professional touch
+Since Vercel has no volume/persistent disk of its own, the database still has to be
+Supabase (or another managed Postgres) in this setup — there's no Railway-style
+"attach a volume" option on Vercel itself.
 
 ## Support
 
-- [Vercel Documentation](https://vercel.com/docs)
+- [Railway Documentation](https://docs.railway.app)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
