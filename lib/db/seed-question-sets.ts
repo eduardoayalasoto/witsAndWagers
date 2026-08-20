@@ -1,3 +1,4 @@
+import "./load-env";
 import { db } from "./client";
 import { categories, questionSets, questionSetQuestions } from "./schema";
 import { randomUUID } from "crypto";

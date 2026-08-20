@@ -60,10 +60,19 @@ In your Vercel project dashboard:
 2. Add these variables (copy from your `.env.local`):
 
 ```
-DATABASE_URL=postgresql://postgres:ALuB5OAqHoUxGoCv@db.iedmeezeuhdqeldywiwg.supabase.co:5432/postgres
-NEXT_PUBLIC_SUPABASE_URL=https://iedmeezeuhdqeldywiwg.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_DB7bMefHVkej7sp1bfrM8g_N6XPbQsE
+DATABASE_URL=postgresql://postgres.[YOUR-PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
+NEXT_PUBLIC_SUPABASE_URL=https://[YOUR-PROJECT-REF].supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=[YOUR-ANON-KEY]
 ```
+
+   ⚠️ **Use the connection pooler for `DATABASE_URL`, not the direct connection.** In
+   Supabase, go to **Settings → Database → Connection string** and pick **"Transaction"**
+   or **"Session"** mode (host `aws-0-<region>.pooler.supabase.com`), not the direct
+   connection (`db.<project-ref>.supabase.co:5432`). The direct connection resolves over
+   IPv6 only on newer Supabase projects, and Vercel's serverless functions run on an
+   IPv4-only network — the connection will simply fail to establish, which looks exactly
+   like "the app is disconnected from the database" even though everything is configured
+   correctly. See the **Troubleshooting** section below.
 
 3. Make sure to add them for **Production**, **Preview**, and **Development** environments
 
@@ -111,11 +120,25 @@ To use your own domain:
 
 ## Troubleshooting
 
-### "Database connection failed"
+### "Database connection failed" / app looks disconnected from the DB
 
-- Verify `DATABASE_URL` in Vercel environment variables
-- Check Supabase project is not paused
-- Ensure connection string includes password
+This is almost always one of these two things:
+
+1. **Using the direct connection instead of the pooler.** Supabase's direct connection
+   (`db.<project-ref>.supabase.co:5432`) is IPv6-only on newer projects. Vercel's
+   serverless functions have no IPv6 route to it, so connections hang or fail outright.
+   Fix: in Supabase, go to **Settings → Database → Connection string**, copy the
+   **connection pooler** string (host `aws-0-<region>.pooler.supabase.com`), and use that
+   for `DATABASE_URL` in Vercel instead.
+2. **Missing/incorrect `DATABASE_URL` in Vercel**, or set only for some environments.
+   Verify it's present for Production (and Preview, if you use preview deployments), and
+   that the password in the string is current.
+
+Also check:
+
+- Supabase project is not paused (free-tier projects pause after a period of inactivity)
+- Vercel deployment logs (`vercel logs` or the dashboard) for the actual connection error
+- Connection string includes the password and ends in `/postgres`
 
 ### "Real-time not working"
 

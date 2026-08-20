@@ -1,3 +1,4 @@
+import "./load-env";
 import { db } from "./client";
 import { games, questions, players, guesses, bets } from "./schema";
 import { nanoid } from "nanoid";
