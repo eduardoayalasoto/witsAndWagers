@@ -16,7 +16,7 @@ export default function ArenaBadge() {
         alt=""
         width={300}
         height={71}
-        className="h-5 w-auto opacity-90"
+        className="h-8 w-auto opacity-90"
         priority={false}
       />
     </div>
