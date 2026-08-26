@@ -3,7 +3,7 @@
 :root {
   /* App now defaults to the dark navy brand background at all times
      (not just prefers-color-scheme: dark) so screens are ready for the
-     Wits & Waggers logo lockup. */
+     Wits & Wagers logo lockup. */
   --background: #10152b;
   --foreground: #f4f5fb;
 }
@@ -14,7 +14,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Brand palette — Wits & Waggers
+  /* Brand palette — Wits & Wagers
      Primary: navy / slate-blue. Secondary: plum / purple.
      Scale numbers follow the brand book (100 background, 700 default,
      800 hover, 900 pressed), all tuned for AAA text contrast. */
@@ -45,7 +45,7 @@
   --color-secondary-900: #391a32;
   --color-secondary-950: #240f20;
 
-  /* Brand gradient accents (used for the Wits & Waggers wordmark and
+  /* Brand gradient accents (used for the Wits & Wagers wordmark and
      other highlight text) */
   --color-brand-pink: #c87fc0;
   --color-brand-blue: #6b8ae3;
@@ -57,7 +57,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Wits & Waggers wordmark / highlight gradient text */
+/* Wits & Wagers wordmark / highlight gradient text */
 .brand-gradient-text {
   background: linear-gradient(90deg, var(--color-brand-pink) 0%, var(--color-brand-blue) 100%);
   -webkit-background-clip: text;
