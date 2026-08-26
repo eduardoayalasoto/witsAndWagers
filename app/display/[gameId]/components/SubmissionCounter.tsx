@@ -23,7 +23,7 @@ export default function SubmissionCounter({
     <div className="fixed top-24 right-8 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-lg shadow-xl border-2 border-white/20">
       <div className="flex items-center gap-3">
         <svg
-          className="w-6 h-6 text-green-400"
+          className="w-6 h-6 text-secondary-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -36,7 +36,7 @@ export default function SubmissionCounter({
           />
         </svg>
         <span className="text-2xl font-bold text-white">
-          {submittedCount}/{totalCount} submitted
+          {submittedCount} de {totalCount} enviados
         </span>
       </div>
     </div>

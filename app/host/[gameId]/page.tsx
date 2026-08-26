@@ -95,12 +95,12 @@ export default function HostDashboardPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to advance phase");
+        throw new Error("No se pudo avanzar de fase");
       }
 
       await fetchGameState();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to advance phase");
+      setError(err instanceof Error ? err.message : "No se pudo avanzar de fase");
     } finally {
       setIsAdvancing(false);
     }
@@ -111,13 +111,13 @@ export default function HostDashboardPage() {
     try {
       const response = await fetch(`/api/games/${gameId}/state`);
       if (!response.ok) {
-        throw new Error("Failed to fetch game state");
+        throw new Error("No se pudo obtener el estado del juego");
       }
       const data = await response.json();
       setGameState(data);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load game");
+      setError(err instanceof Error ? err.message : "No se pudo cargar el juego");
     } finally {
       setLoading(false);
     }
@@ -171,16 +171,16 @@ export default function HostDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading game...</div>
+      <div className="min-h-screen bg-primary-950 flex items-center justify-center">
+        <div className="text-xl text-primary-200">Cargando juego...</div>
       </div>
     );
   }
 
   if (error || !gameState) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-xl text-red-600">{error || "Game not found"}</div>
+      <div className="min-h-screen bg-primary-950 flex items-center justify-center">
+        <div className="text-xl text-red-400">{error || "Juego no encontrado"}</div>
       </div>
     );
   }
@@ -205,11 +205,11 @@ export default function HostDashboardPage() {
   const getPhaseLabel = (phase: string) => {
     switch (phase) {
       case "guessing":
-        return "Guessing Phase";
+        return "Fase de estimación";
       case "betting":
-        return "Betting Phase";
+        return "Fase de apuestas";
       case "reveal":
-        return "Reveal Phase";
+        return "Fase de revelación";
       default:
         return phase;
     }
@@ -218,35 +218,35 @@ export default function HostDashboardPage() {
   const getNextPhaseLabel = (phase: string) => {
     switch (phase) {
       case "guessing":
-        return "Start Betting";
+        return "Iniciar apuestas";
       case "betting":
-        return "Reveal Answer";
+        return "Revelar respuesta";
       case "reveal":
-        return "Next Question";
+        return "Siguiente pregunta";
       default:
-        return "Next Phase";
+        return "Siguiente fase";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-primary-950 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700 mb-6">
+          <h1 className="text-3xl font-bold text-white mb-4">
             {gameState.game.title}
           </h1>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
               <div>
-                <div className="text-sm text-gray-600">Join Code</div>
-                <div className="text-2xl font-mono font-bold text-blue-600">
+                <div className="text-sm text-primary-300">Código del juego</div>
+                <div className="text-2xl font-mono font-bold text-white">
                   {gameState.game.joinCode}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">Players</div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-sm text-primary-300">Jugadores</div>
+                <div className="text-2xl font-bold text-white">
                   {gameState.players.length}
                 </div>
               </div>
@@ -255,7 +255,7 @@ export default function HostDashboardPage() {
               href={`/display/${gameId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 font-medium flex items-center gap-2"
+              className="bg-primary-700 text-white px-6 py-3 rounded-lg hover:bg-primary-800 active:bg-primary-900 font-medium flex items-center gap-2"
             >
               <svg
                 className="w-5 h-5"
@@ -270,22 +270,22 @@ export default function HostDashboardPage() {
                   d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
-              Open Display View
+              Abrir pantalla
             </a>
           </div>
         </div>
 
         {/* Question Management Section */}
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
+        <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700 mb-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900">
-              Question Management
+            <h2 className="text-xl font-bold text-white">
+              Gestión de preguntas
             </h2>
             <button
               onClick={() => setShowQuestionManagement(!showQuestionManagement)}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-secondary-300 hover:text-secondary-200 font-medium"
             >
-              {showQuestionManagement ? "Hide" : "Show"}
+              {showQuestionManagement ? "Ocultar" : "Mostrar"}
             </button>
           </div>
 
@@ -300,7 +300,7 @@ export default function HostDashboardPage() {
                 <a
                   href="/sample-questions.csv"
                   download="sample-questions.csv"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium whitespace-nowrap"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-md hover:bg-primary-800 active:bg-primary-900 font-medium whitespace-nowrap"
                 >
                   <svg
                     className="w-5 h-5"
@@ -315,7 +315,7 @@ export default function HostDashboardPage() {
                       d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  Example CSV
+                  CSV de ejemplo
                 </a>
                 <GameResetButton
                   gameId={gameId}
@@ -354,23 +354,24 @@ export default function HostDashboardPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Start Game Button - Show when game hasn't started */}
             {!currentQuestion && gameState.questions.length > 0 && (
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700">
                 <div className="text-center py-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    Ready to Start?
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    ¿Listo para empezar?
                   </h2>
-                  <p className="text-gray-600 mb-6">
-                    You have {gameState.questions.length} question
-                    {gameState.questions.length !== 1 ? "s" : ""} and{" "}
-                    {gameState.players.length} player
-                    {gameState.players.length !== 1 ? "s" : ""} ready to play.
+                  <p className="text-primary-200 mb-6">
+                    Tienes {gameState.questions.length} pregunta
+                    {gameState.questions.length !== 1 ? "s" : ""} y{" "}
+                    {gameState.players.length} jugador
+                    {gameState.players.length !== 1 ? "es" : ""} listos para
+                    jugar.
                   </p>
                   <button
                     onClick={advancePhase}
                     disabled={isAdvancing}
-                    className="bg-green-600 text-white py-4 px-8 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed font-bold text-xl"
+                    className="bg-primary-700 text-white py-4 px-8 rounded-lg hover:bg-primary-800 active:bg-primary-900 disabled:opacity-50 disabled:cursor-not-allowed font-bold text-xl"
                   >
-                    {isAdvancing ? "Starting..." : "Start Game"}
+                    {isAdvancing ? "Iniciando..." : "Iniciar juego"}
                   </button>
                 </div>
               </div>
@@ -378,13 +379,13 @@ export default function HostDashboardPage() {
 
             {/* No Questions Message */}
             {!currentQuestion && gameState.questions.length === 0 && (
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700">
                 <div className="text-center py-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    No Questions Yet
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    Aún no hay preguntas
                   </h2>
-                  <p className="text-gray-600">
-                    Add questions above to start the game.
+                  <p className="text-primary-200">
+                    Agrega preguntas arriba para iniciar el juego.
                   </p>
                 </div>
               </div>
@@ -392,22 +393,22 @@ export default function HostDashboardPage() {
 
             {/* Current Question */}
             {currentQuestion && (
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="text-sm text-gray-600">
-                    Question {currentQuestionIndex + 1} of{" "}
+                  <div className="text-sm text-primary-300">
+                    Pregunta {currentQuestionIndex + 1} de{" "}
                     {gameState.questions.length}
                   </div>
-                  <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  <div className="px-3 py-1 bg-primary-700 text-primary-50 rounded-full text-sm font-medium">
                     {getPhaseLabel(gameState.game.currentPhase)}
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                <h2 className="text-2xl font-bold text-white mb-2">
                   {currentQuestion.text}
                 </h2>
                 {currentQuestion.subText && (
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-primary-200 mb-4">
                     {currentQuestion.subText}
                   </p>
                 )}
@@ -415,17 +416,17 @@ export default function HostDashboardPage() {
                 {/* Submission Counts */}
                 <div className="flex gap-4 mb-4">
                   {gameState.game.currentPhase === "guessing" && (
-                    <div className="bg-gray-100 px-4 py-2 rounded">
-                      <span className="text-sm text-gray-600">Guesses: </span>
-                      <span className="font-bold text-gray-900">
+                    <div className="bg-primary-900 border border-primary-700 px-4 py-2 rounded">
+                      <span className="text-sm text-primary-300">Estimaciones: </span>
+                      <span className="font-bold text-white">
                         {guessCount} / {gameState.players.length}
                       </span>
                     </div>
                   )}
                   {gameState.game.currentPhase === "betting" && (
-                    <div className="bg-gray-100 px-4 py-2 rounded">
-                      <span className="text-sm text-gray-600">Bets: </span>
-                      <span className="font-bold text-gray-900">
+                    <div className="bg-primary-900 border border-primary-700 px-4 py-2 rounded">
+                      <span className="text-sm text-primary-300">Apuestas: </span>
+                      <span className="font-bold text-white">
                         {betCount} / {gameState.players.length}
                       </span>
                     </div>
@@ -434,15 +435,15 @@ export default function HostDashboardPage() {
 
                 {/* Correct Answer (hidden until reveal) */}
                 {gameState.game.currentPhase === "reveal" && (
-                  <div className="bg-green-100 p-4 rounded mb-4">
-                    <div className="text-sm text-green-800 mb-1">
-                      Correct Answer
+                  <div className="bg-secondary-900/40 border border-secondary-700 p-4 rounded mb-4">
+                    <div className="text-sm text-secondary-300 mb-1">
+                      Respuesta correcta
                     </div>
-                    <div className="text-2xl font-bold text-green-900">
+                    <div className="text-2xl font-bold text-secondary-50">
                       {currentQuestion.correctAnswer}
                     </div>
                     {currentQuestion.followUpNotes && (
-                      <div className="mt-3 text-sm text-green-800">
+                      <div className="mt-3 text-sm text-secondary-200">
                         {currentQuestion.followUpNotes}
                       </div>
                     )}
@@ -453,19 +454,19 @@ export default function HostDashboardPage() {
                 <button
                   onClick={advancePhase}
                   disabled={isAdvancing}
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
+                  className="w-full bg-primary-700 text-white py-3 px-4 rounded-md hover:bg-primary-800 active:bg-primary-900 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 >
                   {isAdvancing
-                    ? "Processing..."
+                    ? "Procesando..."
                     : getNextPhaseLabel(gameState.game.currentPhase)}
                 </button>
               </div>
             )}
 
             {/* Question List */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                All Questions
+            <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700">
+              <h3 className="text-lg font-bold text-white mb-4">
+                Todas las preguntas
               </h3>
               <div className="space-y-2">
                 {gameState.questions.map((question, index) => (
@@ -473,11 +474,11 @@ export default function HostDashboardPage() {
                     key={question.id}
                     className={`p-3 rounded ${
                       question.id === gameState.game.currentQuestionId
-                        ? "bg-blue-100 border-2 border-blue-500"
-                        : "bg-gray-50"
+                        ? "bg-secondary-800/50 border-2 border-secondary-500"
+                        : "bg-primary-900"
                     }`}
                   >
-                    <div className="font-medium text-gray-900">
+                    <div className="font-medium text-white">
                       {index + 1}. {question.text}
                     </div>
                   </div>
@@ -490,35 +491,39 @@ export default function HostDashboardPage() {
           <div className="space-y-6">
             {/* QR Code */}
             {qrCodeUrl && (
-              <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">
-                  Join Game
+              <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700">
+                <h3 className="text-lg font-bold text-white mb-4">
+                  Unirse al juego
                 </h3>
-                <img src={qrCodeUrl} alt="QR Code" className="w-full rounded" />
-                <div className="mt-4 text-center text-sm text-gray-600">
-                  Scan to join
+                <img
+                  src={qrCodeUrl}
+                  alt="Código QR"
+                  className="w-full rounded bg-white p-2"
+                />
+                <div className="mt-4 text-center text-sm text-primary-300">
+                  Escanea para unirte
                 </div>
               </div>
             )}
 
             {/* Players List */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Players</h3>
+            <div className="bg-primary-800 p-6 rounded-lg shadow-xl border border-primary-700">
+              <h3 className="text-lg font-bold text-white mb-4">Jugadores</h3>
               {gameState.players.length === 0 ? (
-                <div className="text-gray-500 text-center py-4">
-                  No players yet
+                <div className="text-primary-300 text-center py-4">
+                  Aún no hay jugadores
                 </div>
               ) : (
                 <div className="space-y-2">
                   {gameState.players.map((player) => (
                     <div
                       key={player.id}
-                      className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                      className="flex justify-between items-center p-2 bg-primary-900 rounded"
                     >
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-white">
                         {player.displayName}
                       </span>
-                      <span className="text-gray-600">{player.score} pts</span>
+                      <span className="text-primary-300">{player.score} pts</span>
                     </div>
                   ))}
                 </div>

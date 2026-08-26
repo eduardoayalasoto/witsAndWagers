@@ -28,29 +28,29 @@ export default function SelectedSetsPanel({
   }
 
   return (
-    <div className="sticky top-4 bg-white border-2 border-blue-600 rounded-lg p-6 shadow-lg">
-      <h3 className="text-lg font-bold text-gray-900 mb-4">
-        Selected Question Sets
+    <div className="sticky top-4 bg-primary-900 border-2 border-secondary-600 rounded-lg p-6 shadow-lg">
+      <h3 className="text-lg font-bold text-white mb-4">
+        Conjuntos de preguntas seleccionados
       </h3>
 
       <div className="space-y-3 mb-4">
         {selectedSets.map((set) => (
           <div
             key={set.id}
-            className="flex items-start justify-between gap-3 p-3 bg-blue-50 rounded-lg"
+            className="flex items-start justify-between gap-3 p-3 bg-secondary-900/40 rounded-lg"
           >
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate">{set.name}</p>
-              <p className="text-sm text-gray-600">
-                {set.categoryName} • {set.questionCount} question
+              <p className="font-medium text-white truncate">{set.name}</p>
+              <p className="text-sm text-primary-300">
+                {set.categoryName} • {set.questionCount} pregunta
                 {set.questionCount !== 1 ? "s" : ""}
               </p>
             </div>
             <button
               type="button"
               onClick={() => onRemoveSet(set.id)}
-              className="flex-shrink-0 text-red-600 hover:text-red-700 text-xl leading-none"
-              aria-label="Remove set"
+              className="flex-shrink-0 text-red-400 hover:text-red-300 text-xl leading-none"
+              aria-label="Quitar conjunto"
             >
               ×
             </button>
@@ -58,12 +58,12 @@ export default function SelectedSetsPanel({
         ))}
       </div>
 
-      <div className="pt-4 border-t border-gray-200">
+      <div className="pt-4 border-t border-primary-700">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-gray-700">
-            Total Questions:
+          <span className="text-sm font-medium text-primary-200">
+            Total de preguntas:
           </span>
-          <span className="text-lg font-bold text-blue-600">
+          <span className="text-lg font-bold text-secondary-400">
             {totalQuestions}
           </span>
         </div>
@@ -72,9 +72,9 @@ export default function SelectedSetsPanel({
           type="button"
           onClick={onProceedToCustomization}
           disabled={selectedSets.length === 0}
-          className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 px-4 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 active:bg-primary-900 disabled:bg-primary-600/50 disabled:cursor-not-allowed transition-colors"
         >
-          Customize & Create Game
+          Personalizar y crear juego
         </button>
       </div>
     </div>

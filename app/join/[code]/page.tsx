@@ -22,7 +22,7 @@ export default function JoinGamePage() {
         // so we'll just show the form and handle errors on submit
         setLoading(false);
       } catch (err) {
-        setError("Invalid join code");
+        setError("Código de juego inválido");
         setLoading(false);
       }
     };
@@ -32,10 +32,10 @@ export default function JoinGamePage() {
 
   const validateDisplayName = (name: string): string | null => {
     if (!name.trim()) {
-      return "Display name is required";
+      return "Tu nombre es obligatorio";
     }
     if (name.length < 1 || name.length > 30) {
-      return "Display name must be between 1 and 30 characters";
+      return "El nombre debe tener entre 1 y 30 caracteres";
     }
     return null;
   };
@@ -65,7 +65,7 @@ export default function JoinGamePage() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error?.message || "Failed to join game");
+        throw new Error(data.error?.message || "No se pudo unir al juego");
       }
 
       const data = await response.json();
@@ -78,61 +78,61 @@ export default function JoinGamePage() {
       // Redirect to player view
       router.push(`/play/${data.gameId}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to join game");
+      setError(err instanceof Error ? err.message : "No se pudo unir al juego");
       setIsSubmitting(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-primary-950 flex items-center justify-center">
+        <div className="text-xl text-primary-200">Cargando...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-primary-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white p-8 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">
-            Join Game
+        <div className="bg-primary-900 border border-primary-700 p-8 rounded-lg shadow-xl">
+          <h1 className="text-3xl font-bold text-white mb-2 text-center">
+            Unirse al juego
           </h1>
           <div className="text-center mb-6">
-            <span className="text-sm text-gray-600">Code: </span>
-            <span className="text-lg font-mono font-bold text-blue-600">
+            <span className="text-sm text-primary-300">Código: </span>
+            <span className="text-lg font-mono font-bold text-white">
               {code}
             </span>
           </div>
 
           {gameTitle && (
             <div className="text-center mb-6">
-              <div className="text-sm text-gray-600">Game</div>
-              <div className="text-xl font-bold text-gray-900">{gameTitle}</div>
+              <div className="text-sm text-primary-300">Juego</div>
+              <div className="text-xl font-bold text-white">{gameTitle}</div>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Your Name
+              <label className="block text-sm font-medium text-primary-200 mb-2">
+                Tu nombre
               </label>
               <input
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                placeholder="Enter your name"
+                className="w-full px-4 py-3 border-2 border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 text-lg bg-white/90"
+                placeholder="Ingresa tu nombre"
                 maxLength={30}
                 autoFocus
               />
-              <div className="mt-1 text-sm text-gray-500">
-                {displayName.length}/30 characters
+              <div className="mt-1 text-sm text-primary-400">
+                {displayName.length}/30 caracteres
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-950/50 border border-red-800 text-red-300 px-4 py-3 rounded">
                 {error}
               </div>
             )}
@@ -140,9 +140,9 @@ export default function JoinGamePage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium text-lg"
+              className="w-full bg-primary-700 text-white py-3 px-4 rounded-md hover:bg-primary-800 active:bg-primary-900 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-lg"
             >
-              {isSubmitting ? "Joining..." : "Join Game"}
+              {isSubmitting ? "Uniéndose..." : "Unirse al juego"}
             </button>
           </form>
         </div>

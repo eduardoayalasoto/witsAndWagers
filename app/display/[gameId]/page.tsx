@@ -243,16 +243,16 @@ export default function DisplayViewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-900 to-purple-900 flex items-center justify-center">
-        <div className="text-3xl text-white">Loading...</div>
+      <div className="min-h-screen bg-linear-to-br from-primary-900 to-primary-950 flex items-center justify-center">
+        <div className="text-3xl text-white">Cargando...</div>
       </div>
     );
   }
 
   if (!gameState) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-900 to-purple-900 flex items-center justify-center">
-        <div className="text-3xl text-white">Game not found</div>
+      <div className="min-h-screen bg-linear-to-br from-primary-900 to-primary-950 flex items-center justify-center">
+        <div className="text-3xl text-white">Juego no encontrado</div>
       </div>
     );
   }
@@ -332,6 +332,13 @@ export default function DisplayViewPage() {
 
   const gridConfig = getGridConfig();
 
+  // Spanish labels for the current phase badge
+  const phaseLabels: Record<string, string> = {
+    guessing: "ADIVINANDO",
+    betting: "APOSTANDO",
+    reveal: "REVELANDO",
+  };
+
   // Find closest guess for reveal phase
   let closestGuessId: string | null = null;
   if (gameState.game.currentPhase === "reveal" && currentQuestion) {
@@ -353,12 +360,12 @@ export default function DisplayViewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-red-900 to-blue-950 text-white">
+    <div className="min-h-screen bg-linear-to-br from-primary-900 to-primary-950 text-white">
       {/* Hidden Navigation Toggle - Click bottom-right corner to reveal */}
       <button
         onClick={() => setShowNavigation(!showNavigation)}
-        className="fixed bottom-4 right-4 w-12 h-12 bg-gray-800 bg-opacity-50 hover:bg-opacity-70 rounded-full flex items-center justify-center z-50 transition-all"
-        title="Toggle navigation"
+        className="fixed bottom-4 right-4 w-12 h-12 bg-primary-800 bg-opacity-50 hover:bg-opacity-70 rounded-full flex items-center justify-center z-50 transition-all"
+        title="Alternar navegación"
       >
         <svg
           className="w-6 h-6"
@@ -378,48 +385,48 @@ export default function DisplayViewPage() {
       {/* Navigation Panel */}
       {(showNavigation || autoShowNav) && !showFinalResults && (
         <div
-          className={`fixed bottom-20 right-4 bg-black bg-opacity-80 backdrop-blur-sm rounded-xl p-4 z-50 min-w-[200px] transition-all duration-300 ${
-            autoShowNav ? "ring-2 ring-green-400" : ""
+          className={`fixed bottom-20 right-4 bg-primary-950 bg-opacity-80 backdrop-blur-sm rounded-xl p-4 z-50 min-w-[200px] transition-all duration-300 ${
+            autoShowNav ? "ring-2 ring-secondary-400" : ""
           }`}
         >
           {autoShowNav && (
-            <div className="text-xs text-green-400 mb-2 font-semibold">
-              ✓ All players ready
+            <div className="text-xs text-secondary-400 mb-2 font-semibold">
+              ✓ Todos los jugadores listos
             </div>
           )}
-          <div className="text-sm text-gray-400 mb-2">Navigation</div>
+          <div className="text-sm text-primary-300 mb-2">Navegación</div>
           <button
             onClick={advancePhaseWithAnimation}
             disabled={isAdvancing || isTransitioning}
-            className="w-full bg-tangerine-dream-500 hover:bg-tangerine-dream-600 disabled:bg-gray-600 text-white py-3 px-4 rounded-lg font-bold transition-colors"
+            className="w-full bg-primary-600 hover:bg-primary-500 disabled:bg-primary-800 disabled:text-primary-400 text-white py-3 px-4 rounded-lg font-bold transition-colors"
           >
             {isAdvancing
-              ? "Processing..."
+              ? "Procesando..."
               : gameState?.game.currentPhase === "guessing"
-                ? "Start Betting →"
+                ? "Comenzar apuestas →"
                 : gameState?.game.currentPhase === "betting"
-                  ? "Reveal Answer →"
-                  : "Next Question →"}
+                  ? "Revelar respuesta →"
+                  : "Siguiente pregunta →"}
           </button>
         </div>
       )}
 
       {/* Header */}
-      <div className="bg-black bg-opacity-30 backdrop-blur-sm">
+      <div className="bg-primary-950 bg-opacity-30 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
           <h1 className="text-4xl font-bold">{gameState.game.title}</h1>
           <div className="flex items-center gap-4">
             {currentQuestion && (
-              <div className="text-lg text-blue-200">
+              <div className="text-lg text-primary-200">
                 {gameState.game.currentPhase === "guessing"
-                  ? `${submittedGuesses}/${totalPlayers} guessed`
+                  ? `${submittedGuesses}/${totalPlayers} adivinaron`
                   : gameState.game.currentPhase === "betting"
-                    ? `${submittedBets}/${totalPlayers} bet`
+                    ? `${submittedBets}/${totalPlayers} apostaron`
                     : ""}
               </div>
             )}
-            <div className="text-2xl font-mono bg-white text-blue-900 px-6 py-2 rounded-lg">
-              {gameState.game.currentPhase.toUpperCase()}
+            <div className="text-2xl font-mono bg-primary-100 text-primary-900 px-6 py-2 rounded-lg">
+              {phaseLabels[gameState.game.currentPhase]}
             </div>
           </div>
         </div>
@@ -427,23 +434,23 @@ export default function DisplayViewPage() {
 
       {/* Horizontal Leaderboard Bar */}
       {sortedPlayers.length > 0 && (
-        <div className="bg-gray-800 bg-opacity-80 backdrop-blur-sm border-b border-gray-700">
+        <div className="bg-primary-900 bg-opacity-80 backdrop-blur-sm border-b border-primary-700">
           <div className="max-w-7xl mx-auto px-8 py-2">
             <div className="flex items-center gap-4 overflow-x-auto">
-              <div className="text-xs font-bold text-gray-400 whitespace-nowrap">
-                LEADERBOARD:
+              <div className="text-xs font-bold text-primary-300 whitespace-nowrap">
+                TABLA DE POSICIONES:
               </div>
               {sortedPlayers.slice(0, 10).map((player, index) => (
                 <div
                   key={player.id}
                   className={`flex items-center gap-2 px-3 py-1 rounded-lg whitespace-nowrap text-sm ${
                     index === 0
-                      ? "bg-yellow-500 bg-opacity-30 border border-yellow-400"
+                      ? "bg-amber-500 bg-opacity-30 border border-amber-400"
                       : index === 1
-                        ? "bg-gray-400 bg-opacity-30 border border-gray-400"
+                        ? "bg-primary-400 bg-opacity-30 border border-primary-300"
                         : index === 2
                           ? "bg-orange-600 bg-opacity-30 border border-orange-500"
-                          : "bg-gray-700 bg-opacity-50"
+                          : "bg-primary-700 bg-opacity-50"
                   }`}
                 >
                   <span className="text-base">
@@ -460,8 +467,8 @@ export default function DisplayViewPage() {
                 </div>
               ))}
               {sortedPlayers.length > 10 && (
-                <div className="text-xs text-gray-400">
-                  +{sortedPlayers.length - 10} more
+                <div className="text-xs text-primary-300">
+                  +{sortedPlayers.length - 10} más
                 </div>
               )}
             </div>
@@ -477,12 +484,20 @@ export default function DisplayViewPage() {
         >
           {!currentQuestion ? (
             <div className="text-center py-8">
+              {/* Brand Wordmark */}
+              <div
+                className="brand-gradient-text font-black mb-4 tracking-tight"
+                style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
+              >
+                WITS &amp; WAGGERS
+              </div>
+
               {/* Heading - responsive size with clamp */}
               <div
                 className="font-bold mb-6"
                 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}
               >
-                Join Now!
+                ¡Únete ahora!
               </div>
 
               {/* QR Code - constrained size */}
@@ -490,7 +505,7 @@ export default function DisplayViewPage() {
                 <div className="mb-6 flex justify-center">
                   <img
                     src={qrCodeUrl}
-                    alt="Join Game QR Code"
+                    alt="Código QR para unirse al juego"
                     className="w-40 h-40 max-w-[200px] max-h-[200px] bg-white p-3 rounded-xl"
                   />
                 </div>
@@ -498,9 +513,11 @@ export default function DisplayViewPage() {
 
               {/* Join Code - responsive size with clamp */}
               <div className="mb-6">
-                <div className="text-lg text-blue-200 mb-2">Join Code:</div>
+                <div className="text-lg text-primary-200 mb-2">
+                  Código del juego:
+                </div>
                 <div
-                  className="font-bold font-mono bg-white text-blue-900 px-8 py-4 rounded-xl inline-block"
+                  className="font-bold font-mono bg-primary-100 text-primary-900 px-8 py-4 rounded-xl inline-block"
                   style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}
                 >
                   {gameState.game.joinCode}
@@ -508,9 +525,10 @@ export default function DisplayViewPage() {
               </div>
 
               {/* Player Count - compact */}
-              <div className="text-xl text-blue-200 mb-6">
+              <div className="text-xl text-primary-200 mb-6">
                 {gameState.players.length}{" "}
-                {gameState.players.length === 1 ? "player" : "players"} ready
+                {gameState.players.length === 1 ? "jugador" : "jugadores"}{" "}
+                listos
               </div>
 
               {/* Start Game Button - responsive */}
@@ -521,14 +539,15 @@ export default function DisplayViewPage() {
                   isTransitioning ||
                   gameState.questions.length === 0
                 }
-                className="bg-tea-green-500 hover:bg-tea-green-600 disabled:bg-gray-600 text-white text-2xl font-bold py-4 px-12 rounded-xl transition-colors disabled:cursor-not-allowed"
+                className="bg-secondary-600 hover:bg-secondary-500 disabled:bg-primary-800 disabled:text-primary-400 text-white text-2xl font-bold py-4 px-12 rounded-xl transition-colors disabled:cursor-not-allowed"
               >
-                {isAdvancing ? "Starting..." : "Start Game"}
+                {isAdvancing ? "Iniciando..." : "Iniciar juego"}
               </button>
 
               {gameState.questions.length === 0 && (
-                <div className="text-lg text-yellow-300 mt-4">
-                  Add questions on the host page to start the game
+                <div className="text-lg text-amber-300 mt-4">
+                  Agrega preguntas en la página del anfitrión para iniciar el
+                  juego
                 </div>
               )}
             </div>
@@ -541,12 +560,12 @@ export default function DisplayViewPage() {
                     {currentQuestion.text}
                   </div>
                   {currentQuestion.subText && (
-                    <div className="text-3xl text-blue-200 mb-12">
+                    <div className="text-3xl text-primary-200 mb-12">
                       {currentQuestion.subText}
                     </div>
                   )}
-                  <div className="text-2xl text-blue-300">
-                    Players are submitting their guesses...
+                  <div className="text-2xl text-primary-300">
+                    Los jugadores están enviando sus estimaciones...
                   </div>
                 </div>
               )}
@@ -560,7 +579,7 @@ export default function DisplayViewPage() {
                       {currentQuestion.text}
                     </div>
                     {currentQuestion.subText && (
-                      <div className="text-2xl text-blue-200">
+                      <div className="text-2xl text-primary-200">
                         {currentQuestion.subText}
                       </div>
                     )}
@@ -569,22 +588,24 @@ export default function DisplayViewPage() {
                   {/* Guesses */}
                   <div className="mb-8">
                     <div className="text-3xl font-bold text-center mb-8">
-                      Place Your Bets!
+                      ¡Hagan sus apuestas!
                     </div>
                     <div
                       className={`grid ${gridConfig.cols} ${gridConfig.gap} ${gridConfig.maxWidth} mx-auto`}
                     >
                       {/* Zero option */}
                       <div
-                        className={`bg-gray-200 backdrop-blur-sm ${gridConfig.padding} rounded-xl text-center border-4 border-gray-600`}
+                        className={`bg-primary-100 backdrop-blur-sm ${gridConfig.padding} rounded-xl text-center border-4 border-primary-400`}
                       >
                         <div
-                          className={`${gridConfig.numberSize} font-bold mb-3 text-gray-900`}
+                          className={`${gridConfig.numberSize} font-bold mb-3 text-primary-900`}
                         >
                           0
                         </div>
-                        <div className={`${gridConfig.nameSize} text-gray-700`}>
-                          Always available
+                        <div
+                          className={`${gridConfig.nameSize} text-primary-700`}
+                        >
+                          Siempre disponible
                         </div>
                       </div>
 
@@ -592,10 +613,10 @@ export default function DisplayViewPage() {
                       {currentGuesses.map((guess) => (
                         <div
                           key={guess.id}
-                          className={`bg-white backdrop-blur-sm ${gridConfig.padding} rounded-xl text-center border-4 border-blue-600`}
+                          className={`bg-primary-50 backdrop-blur-sm ${gridConfig.padding} rounded-xl text-center border-4 border-primary-500`}
                         >
                           <div
-                            className={`font-bold mb-3 text-gray-900 ${gridConfig.numberSize}`}
+                            className={`font-bold mb-3 text-primary-900 ${gridConfig.numberSize}`}
                             style={getResponsiveTextStyle(guess.numericGuess)}
                           >
                             {formatNumber(
@@ -608,7 +629,7 @@ export default function DisplayViewPage() {
                             )}
                           </div>
                           <div
-                            className={`${gridConfig.nameSize} text-gray-700`}
+                            className={`${gridConfig.nameSize} text-primary-700`}
                           >
                             {guess.playerName}
                           </div>
@@ -617,8 +638,8 @@ export default function DisplayViewPage() {
                     </div>
                   </div>
 
-                  <div className="text-2xl text-blue-300 text-center">
-                    Players are placing their bets...
+                  <div className="text-2xl text-primary-300 text-center">
+                    Los jugadores están realizando sus apuestas...
                   </div>
                 </div>
               )}
@@ -639,7 +660,7 @@ export default function DisplayViewPage() {
                           {currentQuestion.text}
                         </div>
                         {currentQuestion.subText && (
-                          <div className="text-2xl text-blue-200">
+                          <div className="text-2xl text-primary-200">
                             {currentQuestion.subText}
                           </div>
                         )}
@@ -647,11 +668,11 @@ export default function DisplayViewPage() {
 
                       {/* Correct Answer */}
                       <div className="text-center mb-12">
-                        <div className="text-2xl text-green-300 mb-4">
-                          Correct Answer
+                        <div className="text-2xl text-secondary-300 mb-4">
+                          Respuesta correcta
                         </div>
                         <div
-                          className="font-bold text-green-400 mb-8"
+                          className="font-bold text-secondary-400 mb-8"
                           style={getResponsiveTextStyle(
                             parseFloat(currentQuestion.correctAnswer),
                           )}
@@ -666,8 +687,8 @@ export default function DisplayViewPage() {
                           )}
                         </div>
                         {currentQuestion.followUpNotes && (
-                          <div className="bg-blue-800 bg-opacity-50 backdrop-blur-sm p-6 rounded-xl max-w-4xl mx-auto">
-                            <p className="text-2xl text-blue-100">
+                          <div className="bg-primary-800 bg-opacity-50 backdrop-blur-sm p-6 rounded-xl max-w-4xl mx-auto">
+                            <p className="text-2xl text-primary-100">
                               {currentQuestion.followUpNotes}
                             </p>
                           </div>
@@ -678,7 +699,7 @@ export default function DisplayViewPage() {
                       {currentGuesses.length > 0 && (
                         <div className="mb-12">
                           <div className="text-3xl font-bold text-center mb-8">
-                            All Guesses
+                            Todas las estimaciones
                           </div>
                           <div
                             className={`grid ${gridConfig.cols} ${gridConfig.gap} ${gridConfig.maxWidth} mx-auto`}
@@ -688,22 +709,22 @@ export default function DisplayViewPage() {
                                 key={guess.id}
                                 className={`${gridConfig.padding} rounded-xl text-center border-4 ${
                                   guess.id === closestGuessId
-                                    ? "bg-green-500 bg-opacity-30 border-green-400 scale-105"
-                                    : "bg-white border-gray-400"
+                                    ? "bg-secondary-500 bg-opacity-30 border-secondary-400 scale-105"
+                                    : "bg-primary-50 border-primary-300"
                                 }`}
                               >
                                 {guess.id === closestGuessId && (
                                   <div
-                                    className={`${gridConfig.nameSize} text-green-300 mb-2`}
+                                    className={`${gridConfig.nameSize} text-secondary-300 mb-2`}
                                   >
-                                    ⭐ WINNER ⭐
+                                    ⭐ GANADOR ⭐
                                   </div>
                                 )}
                                 <div
                                   className={`font-bold mb-2 ${gridConfig.numberSize} ${
                                     guess.id === closestGuessId
                                       ? "text-white"
-                                      : "text-gray-900"
+                                      : "text-primary-900"
                                   }`}
                                   style={getResponsiveTextStyle(
                                     guess.numericGuess,
@@ -721,8 +742,8 @@ export default function DisplayViewPage() {
                                 <div
                                   className={`${gridConfig.nameSize} ${
                                     guess.id === closestGuessId
-                                      ? "text-green-200"
-                                      : "text-gray-700"
+                                      ? "text-secondary-200"
+                                      : "text-primary-700"
                                   }`}
                                 >
                                   {guess.playerName}

@@ -48,7 +48,9 @@ export default function QuestionPreviewModal({
       const data = await response.json();
       setQuestions(data.questions);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load questions");
+      setError(
+        err instanceof Error ? err.message : "No se pudieron cargar las preguntas",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -71,23 +73,24 @@ export default function QuestionPreviewModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="p-6 border-b border-gray-200">
+      <div className="bg-primary-900 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="p-6 border-b border-primary-700">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                {setName || "Question Set Preview"}
+              <h2 className="text-2xl font-bold text-white">
+                {setName || "Vista previa del conjunto de preguntas"}
               </h2>
               {!isLoading && !error && (
-                <p className="mt-1 text-sm text-gray-600">
-                  {questions.length} question{questions.length !== 1 ? "s" : ""}
+                <p className="mt-1 text-sm text-primary-300">
+                  {questions.length} pregunta{questions.length !== 1 ? "s" : ""}
                 </p>
               )}
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              aria-label="Cerrar"
+              className="text-primary-300 hover:text-white text-2xl leading-none"
             >
               ×
             </button>
@@ -98,30 +101,30 @@ export default function QuestionPreviewModal({
           {isLoading && (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <p className="mt-2 text-sm text-gray-600">
-                  Loading questions...
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-300"></div>
+                <p className="mt-2 text-sm text-primary-300">
+                  Cargando preguntas...
                 </p>
               </div>
             </div>
           )}
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-              <p className="text-red-700 mb-4">{error}</p>
+            <div className="bg-red-950/50 border border-red-800 rounded-lg p-6 text-center">
+              <p className="text-red-300 mb-4">{error}</p>
               <button
                 type="button"
                 onClick={fetchQuestions}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
               >
-                Retry
+                Reintentar
               </button>
             </div>
           )}
 
           {!isLoading && !error && questions.length === 0 && (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-              <p className="text-gray-600">No questions in this set</p>
+            <div className="bg-primary-800 border border-primary-700 rounded-lg p-6 text-center">
+              <p className="text-primary-300">No hay preguntas en este conjunto</p>
             </div>
           )}
 
@@ -130,24 +133,26 @@ export default function QuestionPreviewModal({
               {displayedQuestions.map((question, index) => (
                 <div
                   key={question.id}
-                  className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                  className="p-4 bg-primary-800 rounded-lg border border-primary-700"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                    <span className="flex-shrink-0 w-8 h-8 bg-primary-700 text-white rounded-full flex items-center justify-center text-sm font-medium">
                       {index + 1}
                     </span>
                     <div className="flex-1">
-                      <p className="text-lg font-medium text-gray-900 mb-1">
+                      <p className="text-lg font-medium text-white mb-1">
                         {question.text}
                       </p>
                       {question.subText && (
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className="text-sm text-primary-300 mb-2">
                           {question.subText}
                         </p>
                       )}
-                      <div className="mt-3 p-3 bg-white rounded border border-gray-200">
-                        <p className="text-sm text-gray-600 mb-1">Answer:</p>
-                        <p className="text-base font-semibold text-gray-900">
+                      <div className="mt-3 p-3 bg-primary-900 rounded border border-primary-600">
+                        <p className="text-sm text-primary-300 mb-1">
+                          Respuesta:
+                        </p>
+                        <p className="text-base font-semibold text-white">
                           {formatAnswer(
                             question.correctAnswer,
                             question.answerFormat,
@@ -155,8 +160,8 @@ export default function QuestionPreviewModal({
                         </p>
                       </div>
                       {question.followUpNotes && (
-                        <div className="mt-2 p-2 bg-blue-50 rounded text-sm text-gray-700">
-                          <span className="font-medium">Note:</span>{" "}
+                        <div className="mt-2 p-2 bg-primary-700/50 rounded text-sm text-primary-100">
+                          <span className="font-medium">Nota:</span>{" "}
                           {question.followUpNotes}
                         </div>
                       )}
@@ -169,9 +174,9 @@ export default function QuestionPreviewModal({
                 <button
                   type="button"
                   onClick={() => setShowAll(true)}
-                  className="w-full py-3 px-4 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                  className="w-full py-3 px-4 border-2 border-primary-500 rounded-lg text-primary-200 font-medium hover:border-primary-400 hover:bg-primary-800 transition-colors"
                 >
-                  Show All {questions.length} Questions
+                  Mostrar las {questions.length} preguntas
                 </button>
               )}
 
@@ -179,22 +184,22 @@ export default function QuestionPreviewModal({
                 <button
                   type="button"
                   onClick={() => setShowAll(false)}
-                  className="w-full py-3 px-4 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                  className="w-full py-3 px-4 border-2 border-primary-500 rounded-lg text-primary-200 font-medium hover:border-primary-400 hover:bg-primary-800 transition-colors"
                 >
-                  Show Less
+                  Mostrar menos
                 </button>
               )}
             </div>
           )}
         </div>
 
-        <div className="p-6 border-t border-gray-200 flex gap-3">
+        <div className="p-6 border-t border-primary-700 flex gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 py-3 px-4 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+            className="flex-1 py-3 px-4 border border-primary-600 rounded-lg text-primary-200 font-medium hover:bg-primary-800 transition-colors"
           >
-            Close
+            Cerrar
           </button>
           <button
             type="button"
@@ -203,9 +208,9 @@ export default function QuestionPreviewModal({
               onClose();
             }}
             disabled={isLoading || error !== null || questions.length === 0}
-            className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 py-3 px-4 bg-secondary-700 text-white rounded-lg font-medium hover:bg-secondary-800 active:bg-secondary-900 disabled:bg-primary-600/50 disabled:cursor-not-allowed transition-colors"
           >
-            Select This Set
+            Seleccionar este conjunto
           </button>
         </div>
       </div>

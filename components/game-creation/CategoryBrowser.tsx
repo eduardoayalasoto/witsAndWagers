@@ -39,7 +39,9 @@ export default function CategoryBrowser({
       setCategories(data.categories);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load categories",
+        err instanceof Error
+          ? err.message
+          : "No se pudieron cargar las categorías",
       );
     } finally {
       setIsLoading(false);
@@ -50,8 +52,10 @@ export default function CategoryBrowser({
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-sm text-gray-600">Loading categories...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-300"></div>
+          <p className="mt-2 text-sm text-primary-300">
+            Cargando categorías...
+          </p>
         </div>
       </div>
     );
@@ -59,14 +63,14 @@ export default function CategoryBrowser({
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-        <p className="text-red-700 mb-4">{error}</p>
+      <div className="bg-red-950/50 border border-red-800 rounded-lg p-6 text-center">
+        <p className="text-red-300 mb-4">{error}</p>
         <button
           type="button"
           onClick={fetchCategories}
           className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
         >
-          Retry
+          Reintentar
         </button>
       </div>
     );
@@ -74,16 +78,16 @@ export default function CategoryBrowser({
 
   if (categories.length === 0) {
     return (
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-        <p className="text-gray-600">No categories available</p>
+      <div className="bg-primary-900 border border-primary-700 rounded-lg p-6 text-center">
+        <p className="text-primary-300">No hay categorías disponibles</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h3 className="text-lg font-medium text-gray-900 mb-4">
-        Select a Category
+      <h3 className="text-lg font-medium text-white mb-4">
+        Selecciona una categoría
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.map((category) => (
@@ -93,16 +97,16 @@ export default function CategoryBrowser({
             onClick={() => onCategorySelect(category.id)}
             className={`p-6 border-2 rounded-lg text-left transition-all ${
               selectedCategoryId === category.id
-                ? "border-blue-600 bg-blue-50"
-                : "border-gray-300 bg-white hover:border-gray-400"
+                ? "border-secondary-500 bg-secondary-900/40"
+                : "border-primary-600 bg-primary-800 hover:border-primary-400"
             }`}
           >
-            <h4 className="text-lg font-semibold text-gray-900 mb-2">
+            <h4 className="text-lg font-semibold text-white mb-2">
               {category.name}
             </h4>
-            <p className="text-sm text-gray-600">
-              {category.questionSetCount} question set
-              {category.questionSetCount !== 1 ? "s" : ""}
+            <p className="text-sm text-primary-300">
+              {category.questionSetCount} conjunto
+              {category.questionSetCount !== 1 ? "s" : ""} de preguntas
             </p>
           </button>
         ))}

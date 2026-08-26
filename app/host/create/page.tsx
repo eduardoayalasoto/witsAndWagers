@@ -81,7 +81,7 @@ export default function CreateGamePage() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to select question set",
+        err instanceof Error ? err.message : "No se pudo seleccionar el conjunto de preguntas",
       );
     }
   };
@@ -98,12 +98,12 @@ export default function CreateGamePage() {
 
   const handleProceedToCustomization = async () => {
     if (!title.trim()) {
-      setError("Game title is required");
+      setError("El título del juego es obligatorio");
       return;
     }
 
     if (selectedSetIds.length === 0) {
-      setError("Please select at least one question set");
+      setError("Selecciona al menos un conjunto de preguntas");
       return;
     }
 
@@ -115,12 +115,12 @@ export default function CreateGamePage() {
       const allQuestions: LoadedQuestion[] = [];
       for (const setId of selectedSetIds) {
         const response = await fetch(`/api/question-sets/${setId}/questions`);
-        if (!response.ok) throw new Error("Failed to load questions");
+        if (!response.ok) throw new Error("No se pudieron cargar las preguntas");
         const data = await response.json();
 
         // Find the category name for this set
         const set = selectedSets.find((s) => s.id === setId);
-        const categoryName = set?.categoryName || "Unknown";
+        const categoryName = set?.categoryName || "Desconocida";
 
         // Add questions with source category
         const questionsWithSource = data.questions.map(
@@ -138,7 +138,7 @@ export default function CreateGamePage() {
       setLoadedQuestions(allQuestions);
       setIsCustomizing(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load questions");
+      setError(err instanceof Error ? err.message : "No se pudieron cargar las preguntas");
     } finally {
       setIsSubmitting(false);
     }
@@ -151,12 +151,12 @@ export default function CreateGamePage() {
 
   const handleCreateGameWithQuestions = async () => {
     if (!title.trim()) {
-      setError("Game title is required");
+      setError("El título del juego es obligatorio");
       return;
     }
 
     if (loadedQuestions.length === 0) {
-      setError("At least one question is required");
+      setError("Se requiere al menos una pregunta");
       return;
     }
 
@@ -192,7 +192,7 @@ export default function CreateGamePage() {
       if (!response.ok) {
         const data = await response.json();
         console.error("Error response:", data);
-        throw new Error(data.error?.message || "Failed to create game");
+        throw new Error(data.error?.message || "No se pudo crear el juego");
       }
 
       const data = await response.json();
@@ -203,7 +203,7 @@ export default function CreateGamePage() {
       window.location.href = `/host/${data.gameId}`;
     } catch (err) {
       console.error("Error creating game:", err);
-      setError(err instanceof Error ? err.message : "Failed to create game");
+      setError(err instanceof Error ? err.message : "No se pudo crear el juego");
       setIsSubmitting(false);
     }
   };
@@ -212,7 +212,7 @@ export default function CreateGamePage() {
     e.preventDefault();
 
     if (!title.trim()) {
-      setError("Game title is required");
+      setError("El título del juego es obligatorio");
       return;
     }
 
@@ -233,21 +233,21 @@ export default function CreateGamePage() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error?.message || "Failed to create game");
+        throw new Error(data.error?.message || "No se pudo crear el juego");
       }
 
       const data = await response.json();
       router.push(`/host/${data.gameId}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create game");
+      setError(err instanceof Error ? err.message : "No se pudo crear el juego");
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-primary-950 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white p-8 rounded-lg shadow">
+        <div className="bg-primary-800 p-8 rounded-lg shadow-xl border border-primary-700">
           {isCustomizing ? (
             // Customization Editor View
             <QuestionCustomizationEditor
@@ -261,26 +261,26 @@ export default function CreateGamePage() {
           ) : (
             // Selection View
             <>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Create New Game
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Crear nuevo juego
               </h1>
-              <p className="text-gray-600 mb-8">
+              <p className="text-primary-200 mb-8">
                 {mode === "manual"
-                  ? "Enter a title for your game. You'll add questions on the next page."
-                  : "Select pre-made question sets to quickly create your game."}
+                  ? "Ingresa un título para tu juego. Agregarás las preguntas en la siguiente página."
+                  : "Selecciona conjuntos de preguntas predefinidos para crear tu juego rápidamente."}
               </p>
 
               <form onSubmit={handleManualSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Game Title
+                  <label className="block text-sm font-medium text-primary-200 mb-2">
+                    Título del juego
                   </label>
                   <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-gray-900"
-                    placeholder="e.g., Team Trivia Night"
+                    className="w-full px-4 py-3 border border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-lg bg-white/90"
+                    placeholder="p. ej., Noche de trivia en equipo"
                     autoFocus
                   />
                 </div>
@@ -321,7 +321,7 @@ export default function CreateGamePage() {
                 )}
 
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                  <div className="bg-red-950/40 border border-red-800 text-red-300 px-4 py-3 rounded">
                     {error}
                   </div>
                 )}
@@ -331,20 +331,20 @@ export default function CreateGamePage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium text-lg"
+                      className="w-full bg-primary-700 text-white py-3 px-4 rounded-md hover:bg-primary-800 active:bg-primary-900 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-lg"
                     >
-                      {isSubmitting ? "Creating Game..." : "Create Game"}
+                      {isSubmitting ? "Creando juego..." : "Crear juego"}
                     </button>
 
-                    <div className="mt-8 p-4 bg-blue-50 rounded-md">
-                      <h3 className="text-sm font-medium text-blue-900 mb-2">
-                        What&apos;s next?
+                    <div className="mt-8 p-4 bg-primary-900 border border-primary-700 rounded-md">
+                      <h3 className="text-sm font-medium text-primary-100 mb-2">
+                        ¿Qué sigue?
                       </h3>
-                      <ul className="text-sm text-blue-800 space-y-1">
-                        <li>• Upload questions from a CSV or JSON file</li>
-                        <li>• Or add questions manually one by one</li>
-                        <li>• Edit, reorder, or delete questions anytime</li>
-                        <li>• Start the game when you&apos;re ready</li>
+                      <ul className="text-sm text-primary-200 space-y-1">
+                        <li>• Sube preguntas desde un archivo CSV o JSON</li>
+                        <li>• O agrega preguntas manualmente una por una</li>
+                        <li>• Edita, reordena o elimina preguntas en cualquier momento</li>
+                        <li>• Inicia el juego cuando estés listo</li>
                       </ul>
                     </div>
                   </>
