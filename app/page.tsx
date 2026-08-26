@@ -2,24 +2,22 @@
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#f7f5d4] via-[#faddd1] to-[#e4eedd] flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-primary-950 flex items-center justify-center px-4 py-8">
       <div className="max-w-3xl w-full">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-block mb-4">
-            <h1
-              className="text-6xl font-black text-[#e75618] drop-shadow-lg"
-              style={{ fontFamily: 'Impact, "Arial Black", sans-serif' }}
-            >
-              #Trivia
+            {/* Reserved for the Wits & Waggers logo mark */}
+            <h1 className="brand-gradient-text text-6xl font-black tracking-tight">
+              WITS &amp; WAGGERS
             </h1>
           </div>
-          <p className="text-xl text-[#6e332b] font-medium mb-2">
-            Guess. Bet. Win.
+          <p className="text-xl text-primary-100 font-medium mb-2">
+            Adivina. Apuesta. Gana.
           </p>
-          <p className="text-base text-[#486732] max-w-xl mx-auto">
-            The trivia game where you don't need to know the answer—just guess
-            close and bet smart
+          <p className="text-base text-primary-300 max-w-xl mx-auto">
+            El juego de trivia donde no necesitas saber la respuesta: solo
+            adivina cerca y apuesta con inteligencia
           </p>
         </div>
 
@@ -28,12 +26,12 @@ export default function Home() {
           {/* Host Card */}
           <a
             href="/host/create"
-            className="group bg-linear-to-br from-[#f09a75] to-[#ec7846] p-8 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-[#e75618] hover:border-[#b94513] hover:-translate-y-1"
+            className="group bg-primary-800 p-8 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-primary-600 hover:border-secondary-600 hover:-translate-y-1"
           >
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-linear-to-br from-[#ddd755] to-[#adc33c] rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-secondary-700 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                 <svg
-                  className="w-8 h-8 text-[#1a0c0a]"
+                  className="w-8 h-8 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -47,20 +45,20 @@ export default function Home() {
                 </svg>
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">
-                Host a Game
+                Ser anfitrión
               </h2>
-              <p className="text-white text-base">
-                Create questions and run the show
+              <p className="text-primary-200 text-base">
+                Crea preguntas y dirige la partida
               </p>
             </div>
           </a>
 
           {/* Player Card */}
-          <div className="bg-linear-to-br from-[#f09a75] to-[#ec7846] p-8 rounded-xl shadow-xl border-2 border-[#e75618]">
+          <div className="bg-primary-800 p-8 rounded-xl shadow-xl border-2 border-primary-600">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-linear-to-br from-[#ddd755] to-[#d5cc2a] rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 mx-auto mb-4 bg-secondary-700 rounded-xl flex items-center justify-center shadow-lg">
                 <svg
-                  className="w-8 h-8 text-[#1a0c0a]"
+                  className="w-8 h-8 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -74,9 +72,11 @@ export default function Home() {
                 </svg>
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">
-                Join a Game
+                Unirse a un juego
               </h2>
-              <p className="text-white mb-4 text-base">Enter your game code</p>
+              <p className="text-primary-200 mb-4 text-base">
+                Ingresa el código del juego
+              </p>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -90,15 +90,15 @@ export default function Home() {
                 <input
                   type="text"
                   name="code"
-                  placeholder="ENTER CODE"
-                  className="w-full px-4 py-3 border-2 border-white rounded-lg focus:ring-2 focus:ring-[#d5cc2a] focus:border-[#d5cc2a] mb-3 text-center text-lg font-mono uppercase tracking-wider bg-white/90"
+                  placeholder="INGRESA EL CÓDIGO"
+                  className="w-full px-4 py-3 border-2 border-primary-400 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 mb-3 text-center text-lg font-mono uppercase tracking-wider bg-white/90"
                   maxLength={6}
                 />
                 <button
                   type="submit"
-                  className="w-full bg-linear-to-r from-[#d5cc2a] to-[#adc33c] text-[#1a0c0a] py-3 px-4 rounded-lg hover:from-[#aaa422] hover:to-[#8a9c30] font-bold text-base shadow-lg hover:shadow-xl transition-all"
+                  className="w-full bg-secondary-700 text-white py-3 px-4 rounded-lg hover:bg-secondary-800 active:bg-secondary-900 font-bold text-base shadow-lg hover:shadow-xl transition-all"
                 >
-                  Join Game
+                  Unirse al juego
                 </button>
               </form>
             </div>
@@ -106,13 +106,13 @@ export default function Home() {
         </div>
 
         {/* How to Play */}
-        <div className="bg-linear-to-br from-[#d49991] to-[#c6776c] rounded-xl p-6 border-2 border-[#b85447] shadow-xl">
+        <div className="bg-primary-900 rounded-xl p-6 border-2 border-primary-700 shadow-xl">
           <h3 className="text-xl font-bold text-white mb-3 text-center">
-            How to Play
+            Cómo jugar
           </h3>
           <div className="grid md:grid-cols-3 gap-4 text-center">
             <div>
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-white/20 rounded-lg mb-2">
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-white/10 rounded-lg mb-2">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -128,14 +128,14 @@ export default function Home() {
                 </svg>
               </div>
               <h4 className="font-semibold text-white mb-1 text-sm">
-                1. Guess
+                1. Adivina
               </h4>
-              <p className="text-[#f8eeed] text-xs">
-                Submit your best guess to numerical trivia questions
+              <p className="text-primary-200 text-xs">
+                Envía tu mejor estimación a preguntas de trivia numéricas
               </p>
             </div>
             <div>
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-white/20 rounded-lg mb-2">
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-white/10 rounded-lg mb-2">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -150,13 +150,15 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h4 className="font-semibold text-white mb-1 text-sm">2. Bet</h4>
-              <p className="text-[#f8eeed] text-xs">
-                Bet on which guess is closest to the answer
+              <h4 className="font-semibold text-white mb-1 text-sm">
+                2. Apuesta
+              </h4>
+              <p className="text-primary-200 text-xs">
+                Apuesta a la estimación que esté más cerca de la respuesta
               </p>
             </div>
             <div>
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-white/20 rounded-lg mb-2">
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-white/10 rounded-lg mb-2">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -171,9 +173,9 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h4 className="font-semibold text-white mb-1 text-sm">3. Win</h4>
-              <p className="text-[#f8eeed] text-xs">
-                Earn points for accuracy and smart betting
+              <h4 className="font-semibold text-white mb-1 text-sm">3. Gana</h4>
+              <p className="text-primary-200 text-xs">
+                Suma puntos por precisión y apuestas inteligentes
               </p>
             </div>
           </div>

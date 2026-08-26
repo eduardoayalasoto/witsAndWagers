@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "#Trivia",
+  title: "Wits & Waggers",
   description:
-    "Real-time multiplayer trivia game with numerical guesses and betting",
+    "Juego de trivia multijugador en tiempo real con estimaciones numéricas y apuestas",
 };
 
 export default function RootLayout({
@@ -24,7 +24,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
