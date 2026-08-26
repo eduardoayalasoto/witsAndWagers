@@ -7,9 +7,9 @@ export default function Home() {
         {/* Header */}
         <div className="text-center mb-4">
           <div className="inline-block mb-1">
-            {/* Reserved for the Wits & Waggers logo mark */}
+            {/* Reserved for the Wits & Wagers logo mark */}
             <h1 className="brand-gradient-text text-3xl sm:text-4xl font-black tracking-tight">
-              WITS &amp; WAGGERS
+              WITS &amp; WAGERS
             </h1>
           </div>
           <p className="text-base text-primary-100 font-medium">

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Wits & Waggers",
+  title: "Wits & Wagers",
   description:
     "Juego de trivia multijugador en tiempo real con estimaciones numéricas y apuestas",
 };

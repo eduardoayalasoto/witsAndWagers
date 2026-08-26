@@ -489,7 +489,7 @@ export default function DisplayViewPage() {
                 className="brand-gradient-text font-black mb-4 tracking-tight"
                 style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
               >
-                WITS &amp; WAGGERS
+                WITS &amp; WAGERS
               </div>
 
               {/* Heading - responsive size with clamp */}
