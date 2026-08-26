@@ -53,7 +53,9 @@ export default function QuestionSetList({
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load question sets",
+        err instanceof Error
+          ? err.message
+          : "No se pudieron cargar los conjuntos de preguntas",
       );
     } finally {
       setIsLoading(false);
@@ -72,8 +74,10 @@ export default function QuestionSetList({
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-sm text-gray-600">Loading question sets...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-300"></div>
+          <p className="mt-2 text-sm text-primary-300">
+            Cargando conjuntos de preguntas...
+          </p>
         </div>
       </div>
     );
@@ -81,14 +85,14 @@ export default function QuestionSetList({
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-        <p className="text-red-700 mb-4">{error}</p>
+      <div className="bg-red-950/50 border border-red-800 rounded-lg p-6 text-center">
+        <p className="text-red-300 mb-4">{error}</p>
         <button
           type="button"
           onClick={fetchQuestionSets}
           className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
         >
-          Retry
+          Reintentar
         </button>
       </div>
     );
@@ -96,9 +100,9 @@ export default function QuestionSetList({
 
   if (questionSets.length === 0) {
     return (
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-        <p className="text-gray-600">
-          No question sets available in this category
+      <div className="bg-primary-800 border border-primary-700 rounded-lg p-6 text-center">
+        <p className="text-primary-300">
+          No hay conjuntos de preguntas disponibles en esta categoría
         </p>
       </div>
     );
@@ -106,8 +110,8 @@ export default function QuestionSetList({
 
   return (
     <div>
-      <h3 className="text-lg font-medium text-gray-900 mb-4">
-        Select Question Sets
+      <h3 className="text-lg font-medium text-white mb-4">
+        Selecciona conjuntos de preguntas
       </h3>
       <div className="space-y-4">
         {questionSets.map((set) => {
@@ -117,8 +121,8 @@ export default function QuestionSetList({
               key={set.id}
               className={`p-4 border-2 rounded-lg transition-all ${
                 isSelected
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-gray-300 bg-white"
+                  ? "border-secondary-500 bg-secondary-900/40"
+                  : "border-primary-600 bg-primary-800"
               }`}
             >
               <div className="flex items-start gap-4">
@@ -129,20 +133,20 @@ export default function QuestionSetList({
                     onChange={(e) =>
                       handleCheckboxChange(set.id, e.target.checked)
                     }
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-5 h-5 text-secondary-600 border-primary-400 rounded focus:ring-secondary-500"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                  <h4 className="text-lg font-semibold text-white mb-1">
                     {set.name}
                   </h4>
                   {set.description && (
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-primary-300 mb-2">
                       {set.description}
                     </p>
                   )}
-                  <p className="text-sm text-gray-500">
-                    {set.questionCount} question
+                  <p className="text-sm text-primary-300">
+                    {set.questionCount} pregunta
                     {set.questionCount !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -150,9 +154,9 @@ export default function QuestionSetList({
                   <button
                     type="button"
                     onClick={() => onPreview(set.id, set.name)}
-                    className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+                    className="px-4 py-2 text-sm font-medium text-primary-200 hover:text-white hover:bg-primary-700 rounded-md transition-colors"
                   >
-                    Preview
+                    Vista previa
                   </button>
                 </div>
               </div>

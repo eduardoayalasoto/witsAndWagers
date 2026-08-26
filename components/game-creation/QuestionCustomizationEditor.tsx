@@ -104,26 +104,27 @@ export default function QuestionCustomizationEditor({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            Customize Questions
+          <h2 className="text-2xl font-bold text-white">
+            Personalizar preguntas
           </h2>
-          <p className="text-gray-600 mt-1">
-            Edit, reorder, or remove questions before creating your game
+          <p className="text-primary-300 mt-1">
+            Edita, reordena o quita preguntas antes de crear tu juego
           </p>
         </div>
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+          className="px-4 py-2 text-primary-200 border border-primary-600 rounded-md hover:bg-primary-800"
         >
-          ← Back to Selection
+          ← Volver a la selección
         </button>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
-          <strong>{questions.length}</strong> question
-          {questions.length !== 1 ? "s" : ""} ready to add to your game
+      <div className="bg-primary-800 border border-primary-600 rounded-lg p-4">
+        <p className="text-sm text-primary-100">
+          <strong>{questions.length}</strong> pregunta
+          {questions.length !== 1 ? "s" : ""} lista
+          {questions.length !== 1 ? "s" : ""} para agregar a tu juego
         </p>
       </div>
 
@@ -131,14 +132,14 @@ export default function QuestionCustomizationEditor({
         {questions.map((question, index) => (
           <div
             key={question.id}
-            className="bg-white border-2 border-gray-200 rounded-lg p-4"
+            className="bg-primary-800 border-2 border-primary-700 rounded-lg p-4"
           >
             {editingId === question.id && editForm ? (
               // Edit mode
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Question Text *
+                  <label className="block text-sm font-medium text-primary-200 mb-1">
+                    Texto de la pregunta *
                   </label>
                   <input
                     type="text"
@@ -146,14 +147,14 @@ export default function QuestionCustomizationEditor({
                     onChange={(e) =>
                       setEditForm({ ...editForm, text: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter question text"
+                    className="w-full px-3 py-2 border border-primary-500 rounded-md bg-white/90 focus:ring-2 focus:ring-secondary-500 focus:border-transparent"
+                    placeholder="Escribe el texto de la pregunta"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Sub Text (optional)
+                  <label className="block text-sm font-medium text-primary-200 mb-1">
+                    Subtexto (opcional)
                   </label>
                   <input
                     type="text"
@@ -164,15 +165,15 @@ export default function QuestionCustomizationEditor({
                         subText: e.target.value || null,
                       })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Additional context or clarification"
+                    className="w-full px-3 py-2 border border-primary-500 rounded-md bg-white/90 focus:ring-2 focus:ring-secondary-500 focus:border-transparent"
+                    placeholder="Contexto o aclaración adicional"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Correct Answer *
+                    <label className="block text-sm font-medium text-primary-200 mb-1">
+                      Respuesta correcta *
                     </label>
                     <input
                       type="text"
@@ -183,14 +184,14 @@ export default function QuestionCustomizationEditor({
                           correctAnswer: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter answer"
+                      className="w-full px-3 py-2 border border-primary-500 rounded-md bg-white/90 focus:ring-2 focus:ring-secondary-500 focus:border-transparent"
+                      placeholder="Escribe la respuesta"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Answer Format
+                    <label className="block text-sm font-medium text-primary-200 mb-1">
+                      Formato de respuesta
                     </label>
                     <select
                       value={editForm.answerFormat}
@@ -201,12 +202,12 @@ export default function QuestionCustomizationEditor({
                             .value as Question["answerFormat"],
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-primary-500 rounded-md bg-white/90 focus:ring-2 focus:ring-secondary-500 focus:border-transparent"
                     >
-                      <option value="plain">Plain Number</option>
-                      <option value="currency">Currency ($)</option>
-                      <option value="date">Date (Year)</option>
-                      <option value="percentage">Percentage (%)</option>
+                      <option value="plain">Número simple</option>
+                      <option value="currency">Moneda ($)</option>
+                      <option value="date">Fecha (año)</option>
+                      <option value="percentage">Porcentaje (%)</option>
                     </select>
                   </div>
                 </div>
@@ -223,20 +224,20 @@ export default function QuestionCustomizationEditor({
                           roundCurrency: e.target.checked,
                         })
                       }
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-secondary-600 focus:ring-secondary-500 border-primary-400 rounded"
                     />
                     <label
                       htmlFor={`roundCurrency-${editForm.id}`}
-                      className="ml-2 block text-sm text-gray-700"
+                      className="ml-2 block text-sm text-primary-200"
                     >
-                      Round currency to whole dollars
+                      Redondear la moneda a dólares enteros
                     </label>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Follow-up Notes (optional)
+                  <label className="block text-sm font-medium text-primary-200 mb-1">
+                    Notas adicionales (opcional)
                   </label>
                   <textarea
                     value={editForm.followUpNotes || ""}
@@ -247,8 +248,8 @@ export default function QuestionCustomizationEditor({
                       })
                     }
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Additional information to display after revealing the answer"
+                    className="w-full px-3 py-2 border border-primary-500 rounded-md bg-white/90 focus:ring-2 focus:ring-secondary-500 focus:border-transparent"
+                    placeholder="Información adicional para mostrar después de revelar la respuesta"
                   />
                 </div>
 
@@ -257,16 +258,16 @@ export default function QuestionCustomizationEditor({
                     type="button"
                     onClick={handleSaveEdit}
                     disabled={!editForm.text || !editForm.correctAnswer}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="px-4 py-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 disabled:bg-primary-600/50 disabled:cursor-not-allowed"
                   >
-                    Save
+                    Guardar
                   </button>
                   <button
                     type="button"
                     onClick={handleCancelEdit}
-                    className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="px-4 py-2 text-primary-200 border border-primary-600 rounded-md hover:bg-primary-700"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </div>
@@ -278,8 +279,8 @@ export default function QuestionCustomizationEditor({
                     type="button"
                     onClick={() => handleMoveUp(index)}
                     disabled={index === 0}
-                    className="p-1 text-gray-600 hover:text-gray-900 disabled:text-gray-300 disabled:cursor-not-allowed"
-                    title="Move up"
+                    className="p-1 text-primary-300 hover:text-white disabled:text-primary-600 disabled:cursor-not-allowed"
+                    title="Subir"
                   >
                     ▲
                   </button>
@@ -287,8 +288,8 @@ export default function QuestionCustomizationEditor({
                     type="button"
                     onClick={() => handleMoveDown(index)}
                     disabled={index === questions.length - 1}
-                    className="p-1 text-gray-600 hover:text-gray-900 disabled:text-gray-300 disabled:cursor-not-allowed"
-                    title="Move down"
+                    className="p-1 text-primary-300 hover:text-white disabled:text-primary-600 disabled:cursor-not-allowed"
+                    title="Bajar"
                   >
                     ▼
                   </button>
@@ -298,37 +299,37 @@ export default function QuestionCustomizationEditor({
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-white">
                           {index + 1}.
                         </span>
-                        <span className="text-lg font-medium text-gray-900">
+                        <span className="text-lg font-medium text-white">
                           {question.text}
                         </span>
                       </div>
                       {question.subText && (
-                        <p className="text-sm text-gray-600 ml-6">
+                        <p className="text-sm text-primary-300 ml-6">
                           {question.subText}
                         </p>
                       )}
                     </div>
                     {question.sourceCategoryName && (
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      <span className="text-xs bg-primary-700 text-primary-200 px-2 py-1 rounded">
                         {question.sourceCategoryName}
                       </span>
                     )}
                   </div>
 
                   <div className="ml-6 space-y-1">
-                    <p className="text-sm text-gray-700">
-                      <span className="font-medium">Answer:</span>{" "}
+                    <p className="text-sm text-primary-200">
+                      <span className="font-medium">Respuesta:</span>{" "}
                       {question.correctAnswer}
-                      {question.answerFormat === "currency" && " (currency)"}
-                      {question.answerFormat === "date" && " (year)"}
+                      {question.answerFormat === "currency" && " (moneda)"}
+                      {question.answerFormat === "date" && " (año)"}
                       {question.answerFormat === "percentage" && " (%)"}
                     </p>
                     {question.followUpNotes && (
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Notes:</span>{" "}
+                      <p className="text-sm text-primary-300">
+                        <span className="font-medium">Notas:</span>{" "}
                         {question.followUpNotes}
                       </p>
                     )}
@@ -339,16 +340,16 @@ export default function QuestionCustomizationEditor({
                   <button
                     type="button"
                     onClick={() => handleEdit(question)}
-                    className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md"
+                    className="px-3 py-1 text-sm text-primary-200 hover:text-white hover:bg-primary-700 rounded-md"
                   >
-                    Edit
+                    Editar
                   </button>
                   <button
                     type="button"
                     onClick={() => handleRemove(question.id)}
-                    className="px-3 py-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md"
+                    className="px-3 py-1 text-sm text-red-400 hover:text-red-300 hover:bg-red-950/50 rounded-md"
                   >
-                    Remove
+                    Quitar
                   </button>
                 </div>
               </div>
@@ -361,15 +362,15 @@ export default function QuestionCustomizationEditor({
         <button
           type="button"
           onClick={handleAddManual}
-          className="px-4 py-2 text-blue-600 border-2 border-blue-600 rounded-md hover:bg-blue-50 font-medium"
+          className="px-4 py-2 text-primary-200 border-2 border-primary-500 rounded-md hover:bg-primary-800 font-medium"
         >
-          + Add Manual Question
+          + Agregar pregunta manual
         </button>
       </div>
 
-      <div className="border-t pt-6">
+      <div className="border-t border-primary-700 pt-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-950/50 border border-red-800 text-red-300 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
@@ -378,11 +379,11 @@ export default function QuestionCustomizationEditor({
           type="button"
           onClick={onCreateGame}
           disabled={isCreating || questions.length === 0}
-          className="w-full py-3 px-4 bg-green-600 text-white rounded-lg font-medium text-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="w-full py-3 px-4 bg-secondary-700 text-white rounded-lg font-medium text-lg hover:bg-secondary-800 active:bg-secondary-900 disabled:bg-primary-600/50 disabled:cursor-not-allowed"
         >
           {isCreating
-            ? "Creating Game..."
-            : `Create Game with ${questions.length} Question${questions.length !== 1 ? "s" : ""}`}
+            ? "Creando juego..."
+            : `Crear juego con ${questions.length} pregunta${questions.length !== 1 ? "s" : ""}`}
         </button>
       </div>
     </div>

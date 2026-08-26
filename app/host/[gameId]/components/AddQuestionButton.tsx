@@ -38,17 +38,17 @@ export function AddQuestionButton({
 
   const handleSave = async () => {
     if (!text.trim()) {
-      setError("Question text is required");
+      setError("El texto de la pregunta es obligatorio");
       return;
     }
 
     if (!correctAnswer.trim()) {
-      setError("Correct answer is required");
+      setError("La respuesta correcta es obligatoria");
       return;
     }
 
     if (isNaN(parseFloat(correctAnswer))) {
-      setError("Correct answer must be a number");
+      setError("La respuesta correcta debe ser un número");
       return;
     }
 
@@ -77,14 +77,14 @@ export function AddQuestionButton({
       console.log("Response:", response.status, data);
 
       if (!response.ok) {
-        throw new Error(data.error?.message || "Failed to add question");
+        throw new Error(data.error?.message || "No se pudo agregar la pregunta");
       }
 
       handleCancel();
       onQuestionAdded();
     } catch (err) {
       console.error("Error adding question:", err);
-      setError(err instanceof Error ? err.message : "Failed to add question");
+      setError(err instanceof Error ? err.message : "No se pudo agregar la pregunta");
     } finally {
       setSaving(false);
     }
@@ -95,73 +95,74 @@ export function AddQuestionButton({
       <button
         onClick={() => setIsAdding(true)}
         disabled={disabled}
-        className="w-full py-3 px-4 border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:border-gray-400 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Agregar pregunta"
+        className="w-full py-3 px-4 border-2 border-dashed border-primary-500 rounded-md text-primary-200 hover:border-primary-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        + Add Question
+        + Agregar pregunta
       </button>
     );
   }
 
   return (
-    <div className="border-2 border-blue-300 rounded-lg p-4 bg-blue-50">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">
-        Add New Question
+    <div className="border-2 border-primary-600 rounded-lg p-4 bg-primary-900">
+      <h3 className="text-lg font-medium text-white mb-4">
+        Agregar nueva pregunta
       </h3>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-950/40 border border-red-800 text-red-300 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Question Text *
+          <label className="block text-sm font-medium text-primary-200 mb-2">
+            Texto de la pregunta *
           </label>
           <input
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-            placeholder="Enter question"
+            className="w-full px-4 py-2 border border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white/90"
+            placeholder="Ingresa la pregunta"
             disabled={saving}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Sub-text (optional)
+          <label className="block text-sm font-medium text-primary-200 mb-2">
+            Subtexto (opcional)
           </label>
           <input
             type="text"
             value={subText}
             onChange={(e) => setSubText(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-            placeholder="Additional context"
+            className="w-full px-4 py-2 border border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white/90"
+            placeholder="Contexto adicional"
             disabled={saving}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Correct Answer *
+            <label className="block text-sm font-medium text-primary-200 mb-2">
+              Respuesta correcta *
             </label>
             <input
               type="number"
               step="any"
               value={correctAnswer}
               onChange={(e) => setCorrectAnswer(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-              placeholder="Numerical answer"
+              className="w-full px-4 py-2 border border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white/90"
+              placeholder="Respuesta numérica"
               disabled={saving}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Answer Format
+            <label className="block text-sm font-medium text-primary-200 mb-2">
+              Formato de respuesta
             </label>
             <select
               value={answerFormat}
@@ -174,13 +175,13 @@ export function AddQuestionButton({
                     | "percentage",
                 )
               }
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              className="w-full px-4 py-2 border border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white/90"
               disabled={saving}
             >
-              <option value="plain">Plain Number</option>
-              <option value="currency">Currency</option>
-              <option value="date">Date (Year)</option>
-              <option value="percentage">Percentage</option>
+              <option value="plain">Número simple</option>
+              <option value="currency">Moneda</option>
+              <option value="date">Fecha (año)</option>
+              <option value="percentage">Porcentaje</option>
             </select>
           </div>
         </div>
@@ -192,27 +193,27 @@ export function AddQuestionButton({
               id="roundCurrency"
               checked={roundCurrency}
               onChange={(e) => setRoundCurrency(e.target.checked)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-secondary-600 focus:ring-secondary-500 border-primary-400 rounded"
               disabled={saving}
             />
             <label
               htmlFor="roundCurrency"
-              className="ml-2 block text-sm text-gray-700"
+              className="ml-2 block text-sm text-primary-200"
             >
-              Round currency to whole dollars
+              Redondear moneda a dólares enteros
             </label>
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Follow-up Notes (optional)
+          <label className="block text-sm font-medium text-primary-200 mb-2">
+            Notas adicionales (opcional)
           </label>
           <textarea
             value={followUpNotes}
             onChange={(e) => setFollowUpNotes(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-            placeholder="Interesting facts to display after reveal"
+            className="w-full px-4 py-2 border border-primary-400 rounded-md focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white/90"
+            placeholder="Datos curiosos para mostrar después de la revelación"
             rows={3}
             disabled={saving}
           />
@@ -222,16 +223,16 @@ export function AddQuestionButton({
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 active:bg-primary-900 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {saving ? "Adding..." : "Add Question"}
+            {saving ? "Agregando..." : "Agregar pregunta"}
           </button>
           <button
             onClick={handleCancel}
             disabled={saving}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50"
+            className="px-6 py-2 bg-primary-700/40 text-primary-100 rounded-md hover:bg-primary-700/60 disabled:opacity-50"
           >
-            Cancel
+            Cancelar
           </button>
         </div>
       </div>

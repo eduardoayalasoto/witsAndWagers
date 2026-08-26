@@ -13,8 +13,8 @@ export default function QuestionSourceSelector({
 }: QuestionSourceSelectorProps) {
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
-        Question Source
+      <label className="block text-sm font-medium text-primary-200">
+        Origen de las preguntas
       </label>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button
@@ -23,8 +23,8 @@ export default function QuestionSourceSelector({
           disabled={disabled}
           className={`p-4 border-2 rounded-lg text-left transition-all ${
             selectedMode === "manual"
-              ? "border-blue-600 bg-blue-50"
-              : "border-gray-300 bg-white hover:border-gray-400"
+              ? "border-secondary-500 bg-secondary-900/40"
+              : "border-primary-600 bg-primary-800 hover:border-primary-400"
           } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >
           <div className="flex items-start">
@@ -32,22 +32,22 @@ export default function QuestionSourceSelector({
               <div
                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                   selectedMode === "manual"
-                    ? "border-blue-600"
-                    : "border-gray-300"
+                    ? "border-secondary-500"
+                    : "border-primary-500"
                 }`}
               >
                 {selectedMode === "manual" && (
-                  <div className="w-3 h-3 rounded-full bg-blue-600" />
+                  <div className="w-3 h-3 rounded-full bg-secondary-500" />
                 )}
               </div>
             </div>
             <div className="ml-3">
-              <h3 className="text-lg font-medium text-gray-900">
-                Create Questions Manually
+              <h3 className="text-lg font-medium text-white">
+                Crear preguntas manualmente
               </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                Add your own custom trivia questions one by one or upload from a
-                file
+              <p className="mt-1 text-sm text-primary-300">
+                Agrega tus propias preguntas de trivia personalizadas una por
+                una o súbelas desde un archivo
               </p>
             </div>
           </div>
@@ -59,8 +59,8 @@ export default function QuestionSourceSelector({
           disabled={disabled}
           className={`p-4 border-2 rounded-lg text-left transition-all ${
             selectedMode === "premade"
-              ? "border-blue-600 bg-blue-50"
-              : "border-gray-300 bg-white hover:border-gray-400"
+              ? "border-secondary-500 bg-secondary-900/40"
+              : "border-primary-600 bg-primary-800 hover:border-primary-400"
           } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >
           <div className="flex items-start">
@@ -68,22 +68,22 @@ export default function QuestionSourceSelector({
               <div
                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                   selectedMode === "premade"
-                    ? "border-blue-600"
-                    : "border-gray-300"
+                    ? "border-secondary-500"
+                    : "border-primary-500"
                 }`}
               >
                 {selectedMode === "premade" && (
-                  <div className="w-3 h-3 rounded-full bg-blue-600" />
+                  <div className="w-3 h-3 rounded-full bg-secondary-500" />
                 )}
               </div>
             </div>
             <div className="ml-3">
-              <h3 className="text-lg font-medium text-gray-900">
-                Use Pre-Made Questions
+              <h3 className="text-lg font-medium text-white">
+                Usar preguntas predefinidas
               </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                Browse and select from curated question sets across various
-                categories
+              <p className="mt-1 text-sm text-primary-300">
+                Explora y selecciona conjuntos de preguntas curados en varias
+                categorías
               </p>
             </div>
           </div>

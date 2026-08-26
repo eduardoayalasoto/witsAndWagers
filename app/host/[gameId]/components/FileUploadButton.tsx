@@ -49,26 +49,26 @@ export function FileUploadButton({
                 const fieldErrors = err.errors
                   .map((e: any) => `  • ${e.field}: ${e.message}`)
                   .join("\n");
-                return `Question ${err.index + 1}:\n${fieldErrors}`;
+                return `Pregunta ${err.index + 1}:\n${fieldErrors}`;
               } else if (err.field && err.message) {
                 // Parse errors
                 return `${err.message}`;
               }
-              return err.message || "Unknown error";
+              return err.message || "Error desconocido";
             })
             .join("\n\n");
 
           const errorHeader =
             data.error.details.length === 1
-              ? "Error found:"
-              : `${data.error.details.length} errors found:`;
+              ? "Se encontró un error:"
+              : `Se encontraron ${data.error.details.length} errores:`;
 
           throw new Error(`${errorHeader}\n\n${errorMessages}`);
         }
-        throw new Error(data.error?.message || "Failed to import questions");
+        throw new Error(data.error?.message || "No se pudieron importar las preguntas");
       }
 
-      setSuccess(`Successfully imported ${data.imported} questions`);
+      setSuccess(`Se importaron ${data.imported} preguntas correctamente`);
       onImportComplete(data.imported);
 
       // Clear file input
@@ -79,7 +79,7 @@ export function FileUploadButton({
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to import file");
+      setError(err instanceof Error ? err.message : "No se pudo importar el archivo");
     } finally {
       setUploading(false);
     }
@@ -99,45 +99,46 @@ export function FileUploadButton({
         />
         <label
           htmlFor="file-upload"
+          aria-label="Importar preguntas desde un archivo CSV o JSON"
           className={`inline-block px-4 py-2 rounded-md cursor-pointer ${
             disabled || uploading
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-green-600 text-white hover:bg-green-700"
+              ? "bg-primary-700/40 text-primary-400 cursor-not-allowed"
+              : "bg-primary-700 text-white hover:bg-primary-800"
           }`}
         >
-          {uploading ? "Uploading..." : "Import Questions (CSV/JSON)"}
+          {uploading ? "Subiendo..." : "Importar preguntas (CSV/JSON)"}
         </label>
       </div>
 
       {/* Format help text */}
-      <div className="text-xs text-gray-600">
+      <div className="text-xs text-primary-300">
         <details className="cursor-pointer">
-          <summary className="hover:text-gray-800">CSV format help</summary>
-          <div className="mt-2 p-2 bg-gray-50 rounded border border-gray-200">
-            <p className="mb-1">Required columns:</p>
+          <summary className="hover:text-primary-100">Ayuda sobre el formato CSV</summary>
+          <div className="mt-2 p-2 bg-primary-900 rounded border border-primary-700">
+            <p className="mb-1">Columnas obligatorias:</p>
             <ul className="list-disc list-inside ml-2 mb-2">
               <li>
-                <code className="bg-gray-200 px-1 rounded">text</code> - The
-                question text
+                <code className="bg-primary-800 px-1 rounded">text</code> - El
+                texto de la pregunta
               </li>
               <li>
-                <code className="bg-gray-200 px-1 rounded">correctAnswer</code>{" "}
-                - A number
+                <code className="bg-primary-800 px-1 rounded">correctAnswer</code>{" "}
+                - Un número
               </li>
             </ul>
-            <p className="mb-1">Optional columns:</p>
+            <p className="mb-1">Columnas opcionales:</p>
             <ul className="list-disc list-inside ml-2">
               <li>
-                <code className="bg-gray-200 px-1 rounded">subText</code> -
-                Additional context
+                <code className="bg-primary-800 px-1 rounded">subText</code> -
+                Contexto adicional
               </li>
               <li>
-                <code className="bg-gray-200 px-1 rounded">answerFormat</code> -
-                plain, currency, date, or percentage
+                <code className="bg-primary-800 px-1 rounded">answerFormat</code> -
+                plain, currency, date o percentage
               </li>
               <li>
-                <code className="bg-gray-200 px-1 rounded">followUpNotes</code>{" "}
-                - Fun facts to show after reveal
+                <code className="bg-primary-800 px-1 rounded">followUpNotes</code>{" "}
+                - Datos curiosos para mostrar después de la revelación
               </li>
             </ul>
           </div>
@@ -145,14 +146,14 @@ export function FileUploadButton({
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm whitespace-pre-line max-h-60 overflow-y-auto">
-          <div className="font-semibold mb-1">Import Failed</div>
+        <div className="bg-red-950/40 border border-red-800 text-red-300 px-4 py-3 rounded text-sm whitespace-pre-line max-h-60 overflow-y-auto">
+          <div className="font-semibold mb-1">Error al importar</div>
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded text-sm">
+        <div className="bg-secondary-900/40 border border-secondary-700 text-secondary-200 px-4 py-3 rounded text-sm">
           {success}
         </div>
       )}
