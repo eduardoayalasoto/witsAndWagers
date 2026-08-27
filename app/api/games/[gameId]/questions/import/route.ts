@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseCSV, parseJSON } from "@/lib/questions/parser";
+import { decodeUploadedText } from "@/lib/questions/decode-text";
 import { validateQuestionBatch } from "@/lib/questions/validator";
 import { canEditQuestions } from "@/lib/games/state";
 import { verifyGameHost } from "@/lib/auth/host";
@@ -77,8 +78,12 @@ export async function POST(
       );
     }
 
-    // Read file content
-    const content = await file.text();
+    // Read file content. Don't use File.text() — it always assumes UTF-8,
+    // which corrupts accented characters ("á", "ñ", "¿"...) into "�" when
+    // the file was actually saved as Windows-1252 (a common outcome of
+    // exporting CSVs from Excel). decodeUploadedText() detects that case
+    // and falls back to the encoding that recovers the real characters.
+    const content = decodeUploadedText(await file.arrayBuffer());
 
     // Determine file type and parse
     let parseResult;
